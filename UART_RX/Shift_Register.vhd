@@ -1,18 +1,38 @@
+----------------------------------------------------------------------------------
+-- Company: Cerditos felices 
+-- Engineer: Mikecrophone
+-- 
+-- Create Date: 11.12.2016 13:43:44
+-- Design Name: 
+-- Module Name: Shift_Register - Structural
+-- Project Name: UART_RX
+-- Target Devices: Xilinx Artix - 7
+-- Tool Versions: Vivado 2016
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
 library ieee; 
 use ieee.std_logic_1164.all; 
 use ieee.numeric_std.all;
  
-Entity ShiftRegister is 
-  port(
-  RST: in std_logic;
-  CLK: in std_logic;
-  SHF: in std_logic;
-  BIN: in std_logic;
-  DOUT : out std_logic_vector(7 downto 0)
+Entity Shift_Register is 
+port(
+	RST: in std_logic;
+  	CLK: in std_logic;
+  	SHF: in std_logic;
+  	BIN: in std_logic;
+  	DOUT : out std_logic_vector(7 downto 0)
   ); 
-end ShiftRegister;
+end Shift_Register;
 
-Architecture Behavioral of ShiftRegister is 
+Architecture Behavioral of Shift_Register is 
   signal Qp, Qn: std_logic_vector(8 downto 0):="000000000"; 
   begin 
    Combinational: process (SHF, BIN, Qp) 
