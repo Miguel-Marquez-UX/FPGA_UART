@@ -1,18 +1,37 @@
+----------------------------------------------------------------------------------
+-- Company: Cerditos felices 
+-- Engineer: Mikecrophone
+-- 
+-- Create Date: 11.12.2016 13:43:44
+-- Design Name: 
+-- Module Name: Load_Register - Structural
+-- Project Name: UART_RX
+-- Target Devices: Xilinx Artix - 7
+-- Tool Versions: Vivado 2016
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
  Library IEEE;
  use IEEE.std_logic_1164.all;
  use IEEE.std_logic_arith.all;
  
- Entity LoadRegister is
-	 port(
-	 RST: in std_logic;	--Reset Asincrono
-	 CLK: in std_logic;	--Relog Maestro
-	 LDR: in std_logic;	--Enable del MUX
-	 DIN: in std_logic_vector(7 downto 0);	--Dato de Entrada
-	 DOUT: out std_Logic_vector(7 downto 0)	--Dato de Salida
+ Entity Load_Register is
+ port(
+	 RST: in std_logic;			-- Asynchronous Reset
+	 CLK: in std_logic;			-- Master Clock
+	 LDR: in std_logic;			-- MUX Enable
+	 DIN: in std_logic_vector(7 downto 0);	-- Input Data
+	 DOUT: out std_Logic_vector(7 downto 0)	-- Output Data
 	 );
- end LoadRegister;
+ end Load_Register;
  
- Architecture Behavioral of LoadRegister is
+ Architecture Behavioral of Load_Register is
  signal Qp, Qn : std_logic_vector(7 downto 0);
  begin
 	 Combinational :Process(LDR, Qp, DIN)
