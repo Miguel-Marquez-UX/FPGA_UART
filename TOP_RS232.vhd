@@ -43,17 +43,17 @@ end TOP_RS232;
 
 architecture Structural of TOP_RS232 is
 
-Component Transmitter_RS232 is 	
+Component UART_TX is 	
 	port( 
 RST : in  std_logic;
 	      CLK : in  std_logic;
-	      STT : in  std_logic; 					   -- Inicio de transmici髇
+	      STT : in  std_logic; 					   -- Inicio de transmici贸n
 	      D   : in  std_logic_vector(7 downto 0 ); -- Trama de datos  
-	      EOT : out std_logic; 					   -- Informaci髇 de fin de transmici髇 
-	      Tx  : out std_logic);	 			       -- Pin de transmici髇 
+	      EOT : out std_logic; 					   -- Informaci贸n de fin de transmici贸n 
+	      Tx  : out std_logic);	 			       -- Pin de transmici贸n 
 end component;
 
-Component UART_RX_P6 is
+Component UART_RX is
     port( RST  : in  std_logic;
 	      CLK  : in  std_logic;
 	      RXD  : in  std_logic;
@@ -94,7 +94,7 @@ Component Generic_Load_Register is
 	port(
 	RST  : in std_logic; -- Restaurar
 	CLK  : in std_logic; -- Reloj
-	LDR  : in std_logic; -- Se馻l de carga
+	LDR  : in std_logic; -- Se帽al de carga
 	DIN  : in std_logic_vector( n - 1 downto 0 );	-- Dato de entrada
 	DOUT : out std_logic_vector( n - 1 downto 0 )); -- Dato de salida
  
@@ -112,7 +112,7 @@ Component TOP_IIR_1 is
            CLK  : in  STD_LOGIC;
            EN   : in  STD_LOGIC;  -- para la prueba del RS232 se emplea directo para el perdiodo de muestreo 
            XIN  : in  STD_LOGIC_VECTOR (23 downto 0);
-           YR   : out STD_LOGIC;  -- se馻l agregada 
+           YR   : out STD_LOGIC;  -- se帽al agregada 
            YOUT : out STD_LOGIC_VECTOR (23 downto 0));
 end component;
 
@@ -122,13 +122,13 @@ signal INV, LINV, FDAT : std_logic_vector(23 downto 0);
 begin
 
     --Delay       : Generic_Enabled_Counter generic map (1000000) port map (RST, CLK, EN, AT);
-    Receiver    : UART_RX_P6        port map (RST, CLK, RX_B, STR, RDAT);
+    Receiver    : UART_RX           port map (RST, CLK, RX_B, STR, RDAT);
     DataIn      : Acquisition       port map (RST, CLK, RDAT, STR, TS, INV); 
     Latch       : Generic_Load_Register generic map (24) port map (RST, CLK, TS, INV, LINV);
     Delay_FFD1  : FlipFlopD         port map (RST, CLK, TS, DTS); 
     IIR_Filter  : TOP_IIR_1         port map (RST, CLK, DTS, LINV, YR1, FDAT);
     Delay_FFD2  : FlipFlopD         port map (RST, CLK, YR1, YR2);  
     DataOut     : Releaser          port map (RST, CLK, YR2, FDAT, AT, DATA);
-    Transmitter : Transmitter_RS232 port map (RST, CLK, AT, DATA, open, TX_B); -- EOT => open, transmission ended
+    Transmitter : UART_TX	    port map (RST, CLK, AT, DATA, open, TX_B); -- EOT => open, transmission ended
     
 end Structural;
